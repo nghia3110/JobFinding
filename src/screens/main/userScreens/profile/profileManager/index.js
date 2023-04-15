@@ -1,0 +1,99 @@
+import React from 'react';
+import { Image, Text, View } from 'react-native-ui-lib';
+import { ExpandRight, Heart, Images, UserFill } from 'assets';
+import { TouchableOpacity } from 'react-native';
+import { StyledButton } from 'screens/components';
+import { useDispatch } from 'react-redux';
+import { onLogout } from 'store/auth';
+import { useNavigation } from '@react-navigation/native';
+import { useQuery } from 'react-query';
+import { accountApi } from 'apis';
+import { LoadingScreen } from 'components';
+
+export const ProfileManager = () => {
+    const dispatch = useDispatch();
+    // const isLoading = false
+    const { data, isLoading } = useQuery(
+        'get-user-info',
+        accountApi.getUserProfile,
+    );
+
+    return (
+        <>
+            {isLoading ? (
+                <LoadingScreen />
+            ) : (
+                <View backgroundColor={'#ffffff'} height={'100%'} paddingH-20>
+                    <View paddingT-40 marginB-20 row centerV>
+                        <Image source={Images.logo} height={80} width={80} />
+                        <View marginL-5>
+                            <Text
+                                marginB-2
+                                fs19
+                                font-bold
+                                textBlack
+                            >{`${data.first_name} ${data.last_name}`}</Text>
+                            <Text marginT-2 fs14 font-medium black50>
+                                {data.email}
+                            </Text>
+                        </View>
+                    </View>
+                    <ProfileOption
+                        title={'Personal Data'}
+                        icon={<UserFill />}
+                        navigateTo={'UpdateProfile'}
+                        params={{ data }}
+                    />
+                    <ProfileOption
+                        title={'Favorite Jobs'}
+                        icon={<Heart />}
+                        navigateTo={'FavoriteJob'}
+                    />
+
+                    <View marginT-200>
+                        <StyledButton
+                            onPress={() => dispatch(onLogout())}
+                            label={'Log out!'}
+                            bg={'#ffa39e'}
+                            color={{ color: '#f1f4ff' }}
+                        />
+                    </View>
+                </View>
+            )}
+            {/* <View marginT-200>
+                <StyledButton
+                    onPress={() => dispatch(onLogout())}
+                    label={'Log out!'}
+                    bg={'#ffa39e'}
+                    color={{ color: '#f1f4ff' }}
+                />
+            </View> */}
+        </>
+    );
+};
+
+const ProfileOption = ({ title, icon, navigateTo, params }) => {
+    const navi = useNavigation();
+
+    return (
+        <TouchableOpacity onPress={() => navi.navigate(navigateTo, params)}>
+            <View padding-10 row spread centerV>
+                <View row centerV>
+                    <View
+                        style={{ borderRadius: 12 }}
+                        center
+                        width={35}
+                        height={35}
+                        backgroundColor={'#efefef'}
+                    >
+                        {icon}
+                    </View>
+                    <Text marginL-10 fs16 font-medium>
+                        {title}
+                    </Text>
+                </View>
+                <ExpandRight />
+            </View>
+        </TouchableOpacity>
+    );
+};
