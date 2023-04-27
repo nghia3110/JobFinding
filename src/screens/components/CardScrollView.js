@@ -1,15 +1,16 @@
 import { Text, TouchableOpacity, View } from 'react-native-ui-lib';
-import WideJobCard from 'screens/components/card/WideJobCard';
 import React from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { useQuery } from 'react-query';
 import { LoadingScreen } from 'components';
+import JobCard from './card/JobCard';
 
 const CardScrollView = ({
     title,
     params,
     apiFetcher,
-    fetcherKey
+    fetcherKey,
+    navigateTo
 }) => {
     const navigate = useNavigation();
 
@@ -33,14 +34,14 @@ const CardScrollView = ({
                                 {title}
                             </Text>
                             <TouchableOpacity backgroundColor={'transparent'}
-                                onPress={() => navigate.navigate('JobList')}>
-                                <Text textBlack fs14 font-light>{params ? 'See all' : ''}</Text>
+                                onPress={() => navigate.navigate(navigateTo)}>
+                                <Text textBlack fs14 font-light>{params ? 'Tất cả' : ''}</Text>
                             </TouchableOpacity>
                         </View>
                     </View>
                     <View width={'100%'} paddingB-0 paddingH-10>
                         <View paddingV-25 marginL-10 marginR-10>
-                            {data && data.map((el, i) => <WideJobCard key={i} detail={el} />)}
+                            {data && data.map((el, i) => <JobCard key={i} detail={el}/>)}
                         </View>
                     </View>
                 </>
