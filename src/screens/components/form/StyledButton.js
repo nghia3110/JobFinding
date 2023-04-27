@@ -8,7 +8,8 @@ export const StyledButton = ({
                                  onPress,
                                  bg,
                                  color,
-                                 width = '100%'
+                                 width = '100%',
+                                 disabled
                              }) => {
     return (
         <Button
@@ -19,6 +20,7 @@ export const StyledButton = ({
             label={label}
             backgroundColor={bg || 'rgba(41, 114, 254, 1)'}
             onPress={onPress}
+            disabled={disabled}
         />
     );
 };

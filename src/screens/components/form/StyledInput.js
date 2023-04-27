@@ -9,17 +9,20 @@ const { TextField } = Incubator;
 export const StyledInput = ({
                                 placeholder,
                                 type,
-                                Icon,
+                                title,
                                 error,
                                 onBlur,
                                 onChange,
-                                value
+                                value,
+                                multiline = false,
+                                numberOfLines = 1,
                             }) => {
     return (
         <View paddingT-5 style={{ position: 'relative' }}>
+            <Text fs14 marginB-10 marginL-10>{title}</Text>
             <TextField
                 placeholder={placeholder}
-                placeholderTextColor={'rgba(0,0,0,0.5)'}
+                placeholderTextColor={'rgba(0,0,0,0.5)'}               
                 style={[style.styledInput, { marginTop: onBlur ? 0 : 5 }]}
                 secureTextEntry={type === 'password'}
                 autoCapitalize="none"
@@ -27,8 +30,11 @@ export const StyledInput = ({
                 value={value}
                 onBlur={onBlur}
                 onChangeText={onChange}
+                multiline={multiline}
+                numberOfLines={numberOfLines}
+                
             />
-            <Icon style={style.icon}/>
+            {/* <Icon style={style.icon}/> */}
             {onBlur && <Text marginV-5 marginL-5 marginT-10 fs12 color={Colors.error} font-light>{error}&nbsp;</Text>}
         </View>
     );
@@ -37,21 +43,21 @@ export const StyledInput = ({
 const style = StyleSheet.create({
     styledInput: {
         borderStyle: 'solid',
-        width: '100%',
         borderWidth: 0,
         borderRadius: 12,
-        paddingLeft: 40,
+        paddingLeft: 15,
         backgroundColor: '#fff',
         ...boxWithShadow,
         elevation: 12,
         paddingTop: 6,
         paddingBottom: 6,
         zIndex: 1,
+        //textAlignVertical: 'top'
     },
-    icon: {
+    /* icon: {
         position: 'absolute',
         top: 13,
         left: 10,
         zIndex: 2,
-    },
+    }, */
 });
