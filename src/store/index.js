@@ -14,12 +14,12 @@ import { configureStore } from '@reduxjs/toolkit';
 
 import theme from './theme';
 import auth from './auth';
-import createCv from './createCv'
+import createProfile from './createProfile'
 
 const reducers = combineReducers({
     theme,
     auth,
-    createCv,
+    createProfile,
 });
 
 const persistConfig = {
