@@ -5,7 +5,7 @@ import { User, Key } from 'assets';
 import { StyledButton, StyledInput } from 'screens/components';
 import { Controller, useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
-import { setUser } from 'store/auth';
+import { setUser, setCompany } from 'store/auth';
 import { useNavigation } from '@react-navigation/native';
 import { tokenStorage } from 'utilities';
 import { useMutation } from 'react-query';
@@ -45,14 +45,25 @@ export const LoginScreen = () => {
 
     useEffect(() => {
         if (data !== undefined) {
-            dispatch(
-                setUser({
-                    email: getValues('email'),
-                    name: data.name
-                }),
-            );
-            tokenStorage.set(data.token);
-            setTimeout(() => navi.navigate('Home'), 500);
+            if (data.role === 'Người tìm việc') {
+                dispatch(
+                    setUser({
+                        email: getValues('email'),
+                        userInfo: data.userInfo
+                    }),
+                );
+                tokenStorage.set(data.token);
+                setTimeout(() => navi.navigate('UserHome'), 500);
+            } else {
+                dispatch(
+                    setCompany({
+                        email: getValues('email'),
+                        companyInfo: data.companyInfo
+                    }),
+                );
+                tokenStorage.set(data.token);
+                setTimeout(() => navi.navigate('CompanyHome'), 500);
+            }
         }
     }, [data]);
 
@@ -64,7 +75,7 @@ export const LoginScreen = () => {
             >
                 <View paddingH-20 paddingT-10>
                     <Text fs18 textBlack font-bold center>
-                        Log in to your account
+                        Đăng nhập với tài khoản của bạn
                     </Text>
                     <View paddingT-15 paddingB-40 width={'100%'}>
                         <Controller
@@ -77,7 +88,7 @@ export const LoginScreen = () => {
                                         errors.username &&
                                         errors.username.message
                                     }
-                                    Icon={User}
+                                    title={'Email:'}
                                     placeholder={'Email'}
                                     onChange={onChange}
                                     onBlur={onBlur}
@@ -107,7 +118,7 @@ export const LoginScreen = () => {
                                         errors.password &&
                                         errors.password.message
                                     }
-                                    Icon={User}
+                                    title={'Mật khẩu: '}
                                     type={'password'}
                                     placeholder={'Password'}
                                     onChange={onChange}
@@ -131,7 +142,7 @@ export const LoginScreen = () => {
                         />
                         <StyledButton
                             onPress={handleSubmit(onSubmit)}
-                            label={'Log in'}
+                            label={'Đăng nhập'}
                         />
                     </View>
                     <View>
@@ -144,7 +155,7 @@ export const LoginScreen = () => {
                                 blue30
                                 font-light
                             >
-                                Forgot the password?
+                                Quên mật khẩu?
                             </Text>
                         </TouchableOpacity>
                         <Text style={style.labelText}
@@ -152,7 +163,7 @@ export const LoginScreen = () => {
                             fs14
                             font-light
                         >
-                            Don't have an account? &nbsp;
+                            Bạn chưa có tài khoản? &nbsp;
                             <Text
                                 onPress={() => navi.navigate('Register')}
                                 style={style.navigateText}
@@ -160,7 +171,7 @@ export const LoginScreen = () => {
                                 blue30
                                 font-light
                             >
-                                Sign up
+                                Đăng ký
                             </Text>
                         </Text>
                     </View>

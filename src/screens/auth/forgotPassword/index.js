@@ -45,7 +45,7 @@ export const ForgotPassword = () => {
                                  }) => (
                             <StyledInput
                                 error={errors.email && errors.email.message}
-                                Icon={User}
+                                
                                 placeholder={'Email'}
                                 onChange={onChange}
                                 onBlur={onBlur}
