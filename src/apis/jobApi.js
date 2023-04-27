@@ -30,29 +30,18 @@ export const jobApi = {
     },
     
     searchJob: async query => {
-        const { data } = await axios.get(`/job/get-all?${query}`);
+        const data  = await axios.get(`/job/search-job?${query}`);
         return data;
     },
 
-    getjobDetail: async id => {
-        const data = await axios.get(`/job/get-job-detail/${id}`, jsonType);
+    getjobDetail: async (id, userId) => {
+        const data = await axios.get(`/job/get-job-detail/${id}?userId=${userId}`, jsonType);
         return data;
     },
-
-    applyJob: async data =>
-        axios.post('/job/apply-job', data, {
-            headers: { 'Content-Type': 'multipart/form-data' },
-        }),
 
     getJobFavorite: async query => {
         const { data } = await axios.get('/job/get-job-favorite');
         return data;
     },
 
-    getJobApplied: async query => {
-        const listJob = { jobs: [] };
-        const { data } = await axios.get('/job/get-job-applies');
-        listJob.jobs = data;
-        return listJob;
-    },
 };

@@ -6,12 +6,28 @@ export const companyApi = {
         return data;
     },
     getCompanyDetail: async (id) => {
-        const { data } = await axios.get(`/company/get-by-id/${id}`);
+        const { data } = await axios.get(`/company/profile`);
         return data;
     },
-    getCompanyJobs: async (id) => {
-        const { data } = await axios.get(`/company/get-all-job/${id}`);
+    getAllCompanyJobs: async () => {
+        const data = await axios.get(`/company/jobs`);
         return data;
     },
-
+    getCompanyJobs: async () => {
+        const data = await axios.get(`/company/jobs?limit=3`);
+        return data;
+    },
+    getApplicants: async (jobId) => {
+        const data = await axios.get(`/company/applicants?jobId=${jobId}`);
+        return data;
+    },
+    createJob: async (data) => axios.post('/company/create-job', data, {
+        headers: { 'Content-Type': 'application/json' },
+    }),
+    updateJob: async (updateData) => axios.put(`/company/update-job`, updateData, {
+        headers: { 'Content-Type': 'application/json' },
+    }),
+    approveJob: async (data) => axios.put(`/company/approve-job`, data, {
+        headers: { 'Content-Type': 'application/json' },
+    }),
 }
