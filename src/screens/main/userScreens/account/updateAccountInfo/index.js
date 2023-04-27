@@ -3,7 +3,7 @@ import { Image, Text, View } from 'react-native-ui-lib';
 import { Images, User } from 'assets';
 import { Controller, useForm } from 'react-hook-form';
 import { useMutation } from 'react-query';
-import { accountApi } from 'apis';
+import { userApi } from 'apis';
 import { LoadingScreen } from 'components';
 import Toast from 'react-native-simple-toast';
 import { StyledButton, StyledInput, StyledDatePicker } from 'screens/components';
@@ -40,14 +40,15 @@ const genderData = [
     },
 ]
 
-export const UpdateProfile = ({ route }) => {
+export const UpdateAccountInfo = ({ route }) => {
     const { data } = route.params;
+    console.log(data)
 
     const {
         isLoading,
         mutate: updateInfoHandler,
         data: responseData,
-    } = useMutation(accountApi.updateuserInfo)
+    } = useMutation(userApi.updateuserInfo)
 
     const {
         handleSubmit,
@@ -58,12 +59,12 @@ export const UpdateProfile = ({ route }) => {
     } = useForm({
         defaultValues: {
             email: data.email,
-            firstName: data.first_name,
-            lastName: data.last_name,
-            dob: toDate(data.dob.slice(0, 10)),
+            firstName: data.userInfo.first_name,
+            lastName: data.userInfo.last_name,
+            dob: toDate(data.userInfo.dob.slice(0, 10)),
             // gender: data.gender
-            phoneNumber: data.phone,
-            address: data.address,
+            phoneNumber: data.userInfo.phone,
+            address: data.userInfo.address,
         }
     });
 
@@ -88,10 +89,10 @@ export const UpdateProfile = ({ route }) => {
             {isLoading && <LoadingScreen/>}
             <View backgroundColor={'#ffffff'} height={'100%'} paddingH-20>
                 <View paddingT-40 marginB-20 row centerV>
-                    <Image source={Images.logo} height={80} width={80}/>
-                    <View marginL-5>
+                    <Image source={{uri: data.userInfo.avatar}} style={{borderRadius: 30}} height={60} width={60}/>
+                    <View marginL-15>
                         <Text marginB-2 fs19 font-bold
-                              textBlack>{`${data.first_name} ${data.last_name}`}</Text>
+                              textBlack>{`${data.userInfo.first_name} ${data.userInfo.last_name}`}</Text>
                         <Text marginT-2 fs14 font-medium
                               black50>{data.email}</Text>
                     </View>
@@ -108,7 +109,7 @@ export const UpdateProfile = ({ route }) => {
                                  }) => (
                             <StyledInput
                                 error={errors.firstName && errors.firstName.message}
-                                Icon={User}
+                                title={'Tên: '}
                                 placeholder={'First name'}
                                 onChange={onChange}
                                 onBlur={onBlur}
@@ -135,7 +136,7 @@ export const UpdateProfile = ({ route }) => {
                                  }) => (
                             <StyledInput
                                 error={errors.lastName && errors.lastName.message}
-                                Icon={User}
+                                title={'Họ đệm: '}
                                 placeholder={'Last name'}
                                 onChange={onChange}
                                 onBlur={onBlur}
@@ -162,7 +163,7 @@ export const UpdateProfile = ({ route }) => {
                                  }) => (
                             <StyledInput
                                 error={errors.username && errors.username.message}
-                                Icon={User}
+                                title={'Email: '}
                                 placeholder={'Email'}
                                 onChange={onChange}
                                 onBlur={onBlur}
@@ -189,7 +190,7 @@ export const UpdateProfile = ({ route }) => {
                                  }) => (
                             <StyledInput
                                 error={errors.phoneNumber && errors.phoneNumber.message}
-                                Icon={User}
+                                title={'Số điện thoại: '}
                                 placeholder={'Phone'}
                                 onChange={onChange}
                                 onBlur={onBlur}
@@ -210,7 +211,7 @@ export const UpdateProfile = ({ route }) => {
                                  }) => (
                             <StyledInput
                                 error={errors.address && errors.address.message}
-                                Icon={User}
+                                title={'Địa chỉ: '}
                                 placeholder={'Address'}
                                 onChange={onChange}
                                 onBlur={onBlur}
@@ -220,23 +221,6 @@ export const UpdateProfile = ({ route }) => {
                         name="address"
                         rules={{ required: 'Address is required!' }}
                     />
-                    {/* <Controller */}
-                    {/*     control={control} */}
-                    {/*     render={({ */}
-                    {/*                  field: { */}
-                    {/*                      onChange, */}
-                    {/*                      value */}
-                    {/*                  } */}
-                    {/*              }) => ( */}
-                    {/*         <FilterInput */}
-                    {/*             placeholder={'Gender'} */}
-                    {/*             onChange={onChange} */}
-                    {/*             value={value} */}
-                    {/*             data={genderData} */}
-                    {/*         /> */}
-                    {/*     )} */}
-                    {/*     name="gender" */}
-                    {/* /> */}
                     <Controller
                         control={control}
                         render={({
@@ -248,7 +232,7 @@ export const UpdateProfile = ({ route }) => {
                                  }) => (
                             <StyledDatePicker
                                 error={errors.dob && errors.dob.message}
-                                Icon={User}
+                                title={'Ngày sinh: '}
                                 placeholder={'Age'}
                                 onChange={onChange}
                                 onBlur={onBlur}
@@ -259,7 +243,7 @@ export const UpdateProfile = ({ route }) => {
                         rules={{ required: 'Age is required!' }}
                     />
                 </View>
-                <StyledButton onPress={handleSubmit(onSubmit)} label={'Update'}/>
+                <StyledButton onPress={handleSubmit(onSubmit)} label={'Cập nhật thông tin'}/>
             </View>
         </>
     )

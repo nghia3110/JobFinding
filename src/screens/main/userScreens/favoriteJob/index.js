@@ -2,7 +2,7 @@ import React from 'react';
 import { useQuery } from 'react-query';
 import { LoadingScreen } from 'components';
 import { ScreenLayout } from 'screens/components';
-import WideJobCard from 'screens/components/card/WideJobCard';
+import JobCard from 'screens/components/card/JobCard';
 import { ScrollView } from 'react-native';
 import { jobApi } from 'apis';
 import { View } from 'react-native-ui-lib';
@@ -27,7 +27,7 @@ export const FavoritedJob = () => {
                         <View paddingV-25>
                             {data &&
                                 data.map(el => (
-                                    <WideJobCard key={el.id} detail={el} />
+                                    <JobCard key={el.id} detail={el} />
                                 ))}
                         </View>
                     </View>

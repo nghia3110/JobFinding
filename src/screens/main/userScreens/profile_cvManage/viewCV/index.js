@@ -3,11 +3,19 @@ import { ScreenLayout } from 'screens/components';
 import { Text, View } from 'react-native-ui-lib';
 import { useNavigation } from '@react-navigation/native';
 import { TouchableOpacity, StyleSheet } from 'react-native';
+import { useQuery } from 'react-query';
+import { cvApi } from 'apis';
+import { Buffer } from 'buffer';
 import Pdf from 'react-native-pdf';
 
 export const ViewCV = ( {route} ) => {
-    const { cv } = route.params;
-    const source = {uri: cv.uri};
+    const { cv, id } = route.params;
+
+    const {
+        data,
+        isLoading
+    } = useQuery(['get-cv-file', id], () => cvApi.getCvFile(id))
+    const source = {uri: cv.uri || `data:application/pdf;base64,${data}`};
     return (
         <ScreenLayout title={'Chi tiết CV'} icon={'arrow-left'} contentHeight={'100%'}
                       notFooter>
