@@ -1,6 +1,5 @@
 import React from 'react';
-import { DateTimePicker, Text, View } from 'react-native-ui-lib';
-
+import { Text, View, DateTimePicker } from 'react-native-ui-lib';
 import { StyleSheet } from 'react-native';
 import { boxWithShadow } from 'utilities/boxShadow';
 import { Colors } from 'assets/Colors';
@@ -15,15 +14,16 @@ export const StyledDatePicker = ({
                                      value
                                  }) => {
     return (
-        <View paddingT-5 style={{ position: 'relative' }}>
+        <View style={{ position: 'relative' }}>
             <Text fs14 marginB-10 marginL-10>{title}</Text>
             <DateTimePicker
                 placeholder={placeholder}
                 placeholderTextColor={'rgba(0,0,0,0.5)'}
                 style={style.styledInput}
                 value={value}
+                mode={'date'}
                 onBlur={onBlur}
-                onChange={(date) => onChange(date)}          
+                onChange={(date) => onChange(date)}         
             />
             {/* <Icon style={style.icon}/> */}
             <Text marginV-5 marginL-40 fs12 color={Colors.error} font-light>{error}&nbsp;</Text>
