@@ -18,7 +18,7 @@ export const StyledInput = ({
                                 numberOfLines = 1,
                             }) => {
     return (
-        <View paddingT-5 style={{ position: 'relative' }}>
+        <View style={{ position: 'relative' }}>
             <Text fs14 marginB-10 marginL-10>{title}</Text>
             <TextField
                 placeholder={placeholder}
@@ -32,7 +32,6 @@ export const StyledInput = ({
                 onChangeText={onChange}
                 multiline={multiline}
                 numberOfLines={numberOfLines}
-                
             />
             {/* <Icon style={style.icon}/> */}
             {onBlur && <Text marginV-5 marginL-5 marginT-10 fs12 color={Colors.error} font-light>{error}&nbsp;</Text>}
