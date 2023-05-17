@@ -73,7 +73,7 @@ export const ApproveJob = ({
                                         }} />
                                 </View>
                                 <View width={'70%'}>
-                                    <Text style={{ width: '100%' }} textBlack fs18 font-extraBold>{userData.first_name + ' ' + userData.last_name}</Text>
+                                    <Text style={{ width: '100%' }} textBlack fs18 font-extraBold>{userData.last_name + ' ' + userData.first_name}</Text>
                                 </View>
                             </View >
                             <View paddingH-10 paddingT-10>
@@ -135,7 +135,7 @@ export const ApproveJob = ({
                                         onChangeText={handleChange}
                                         style={styles.styledInput}
                                         multiline={true}
-                                        numberOfLines={10}
+                                        numberOfLines={5}
                                     />
                                 </View>
                             </View>

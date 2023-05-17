@@ -56,22 +56,64 @@ const location = [
 
 const salary = [
     {
-        value: '5 - 10 triệu',
+        value: '5,10',
         label: '5 - 10 triệu'
     },
     {
-        value: '12 - 17 triệu',
-        label: '12 - 17 triệu'
+        value: '10,15',
+        label: '10 - 15 triệu'
     },
     {
-        value: 'Thoả thuận',
-        label: 'Thoả thuận'
+        value: '15,20',
+        label: '15 - 20 triệu'
     },
     {
-        value: 'Tới 40 triệu',
-        label: 'Tới 40 triệu'
+        value: '20,30',
+        label: '20 - 30 triệu'
+    },
+    {
+        value: '30,0',
+        label: 'Trên 30 triệu'
+    },
+    {
+        value: '0,0',
+        label: 'Thỏa thuận'
+    }
+];
+
+const category = [
+    {
+        label: 'IT phần mềm',
+        value: '1'
+    },
+    {
+        label: 'Dịch vụ khách hàng',
+        value: '2'
+    },
+    {
+        label: 'IT phần cứng / mạng',
+        value: '3'
+    },
+    {
+        label: 'Điện tử viễn thông',
+        value: '4'
+    },
+    {
+        label: 'Hành chính / Văn phòng',
+        value: '5'
     },
 ];
+
+const handleSalary = (salary) => {
+    if(salary) {
+        const arr = salary.split(',');
+        const res = [];
+        res.push(parseInt(arr[0]), parseInt(arr[1]));
+        return res;
+    } else {
+        return undefined;
+    }
+}
 
 export const SearchFilter = () => {
     const navi = useNavigation()
@@ -81,20 +123,15 @@ export const SearchFilter = () => {
     } = useForm();
 
     const onSubmit = values => {
-        // console.log(values)
-        // console.log({
-        //     title: values.title,
-        //     salary_type: values.salaryType.value,
-        //     salary_from: values.salaryFrom.value,
-        //     exp_years_from: values.yearExp.value,
-        //     position_id: values.position.value,
-        //     salary_to: values.salaryTo.value,
-        // });
+        const salaryValues = handleSalary(values.salary)
+        //console.log(salaryValues[0], salaryValues[1])
         navi.navigate('SearchResult', {
             job_name: values.job_name ,
-            salary: values.salary,
+            salaryFrom: salaryValues !== undefined ? salaryValues[0] : undefined,
+            salaryTo: salaryValues !== undefined ? salaryValues[1] : undefined,
             position: values.position,
             location: values.location,
+            category: values.category
         })
     };
 
@@ -174,6 +211,23 @@ export const SearchFilter = () => {
                                 />
                             )}
                             name="location"
+                        />
+                        <Controller
+                            control={control}
+                            render={({
+                                field: {
+                                    onChange,
+                                    value
+                                }
+                            }) => (
+                                <FilterInput
+                                    placeholder={'Nghề nghiệp'}
+                                    onChange={onChange}
+                                    value={value}
+                                    data={category}
+                                />
+                            )}
+                            name="category"
                         />
                     </View>
                     <StyledButton onPress={handleSubmit(onSubmit)} label={'Xác nhận'} />

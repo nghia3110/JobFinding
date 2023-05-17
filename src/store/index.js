@@ -12,14 +12,10 @@ import {
 } from 'redux-persist';
 import { configureStore } from '@reduxjs/toolkit';
 
-import theme from './theme';
 import auth from './auth';
-import createProfile from './createProfile'
 
 const reducers = combineReducers({
-    theme,
     auth,
-    createProfile,
 });
 
 const persistConfig = {

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Text, TextField, View, Toast } from 'react-native-ui-lib';
-import { CvCard, ScreenLayout, StyledButton } from 'screens/components';
+import { ScreenLayout, StyledButton } from 'screens/components';
 import { useMutation, useQuery } from 'react-query';
 import { cvApi, userApi } from 'apis';
 import { LoadingScreen } from 'components';
@@ -62,7 +62,6 @@ export const ApplyJob = ({
 
     useEffect(() => {
         if (data !== undefined) {
-            //Toast.show('Ứng tuyển thành công!')
             setIsNotiVisible(true);
             setTimeout(() => {
                 setIsNotiVisible(false);
@@ -104,7 +103,7 @@ export const ApplyJob = ({
                                 label={'Ứng tuyển ngay'}
                                 color={{ fontSize: 18 }}
                             />
-                            <StyledButton
+                            {/* <StyledButton
                                 onPress={() => {
                                     navigation.navigate('ViewCV', { cv: cvFile[0] })
                                     setIsVisible(false)
@@ -112,7 +111,7 @@ export const ApplyJob = ({
                                 label={'Xem lại CV'}
 
                                 color={{ fontSize: 18 }}
-                            />
+                            /> */}
                             <TouchableOpacity
                                 onPress={() => setIsVisible(false)}
                                 style={{
@@ -213,7 +212,7 @@ export const ApplyJob = ({
                                 onChangeText={handleChange}
                                 style={styles.styledInput}
                                 multiline={true}
-                                numberOfLines={10}
+                                numberOfLines={5}
                             />
                         </View>
                     </View>

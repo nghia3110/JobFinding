@@ -24,7 +24,9 @@ import {
     UpdateJob,
     ApproveJob,
     ApplicationDetail,
-    ViewUserProfile
+    ViewUserProfile,
+    UploadCV,
+    Notifications
 } from 'screens/main';
 import React, { useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
@@ -35,10 +37,8 @@ import { navigationRef } from './utils';
 import { useAuth } from 'hooks';
 import SplashScreen from 'react-native-splash-screen';
 import { LoginScreen, RegisterUser, RegisterCompany, ForgotPassword, SelectRoleScreen } from 'screens/auth';
-import { CompanyList } from 'screens/main/company';
-import { CompanyDetail } from 'screens/main/company/CompanyDetail';
-import { CompanyJobs } from 'screens/main/company/CompanyJobs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { UpdateCompanyInfo } from 'screens/main/companyScreens/profile/updateProfile';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -99,22 +99,11 @@ export const ApplicationNavigator = () => {
                             />
                             <Stack.Screen name="UpdateProfile" component={UpdateProfile} />
                             <Stack.Screen name="ListCv" component={ListCV} />
+                            <Stack.Screen name="UploadCV" component={UploadCV} />
 
 
                             <Stack.Screen name="ApplyJob" component={ApplyJob} />
                             <Stack.Screen name="ApplicationDetail" component={ApplicationDetail} />
-                            <Stack.Screen
-                                name="CompanyList"
-                                component={CompanyList}
-                            />
-                            <Stack.Screen
-                                name="CompanyDetail"
-                                component={CompanyDetail}
-                            />
-                            <Stack.Screen
-                                name="CompanyJob"
-                                component={CompanyJobs}
-                            />
                         </>}
                         {company && <>
                             <Stack.Screen
@@ -141,6 +130,10 @@ export const ApplicationNavigator = () => {
                             <Stack.Screen
                                 name="ViewUserProfile"
                                 component={ViewUserProfile} 
+                            />
+                            <Stack.Screen
+                                name="UpdateCompanyInfo"
+                                component={UpdateCompanyInfo} 
                             />
                         </>}
                         <Stack.Screen name="ViewCV" component={ViewCV} />
@@ -245,6 +238,21 @@ const CompanyTabBarNavigation = () => {
                         />
                     ),
                     tabBarLabel: 'Trang chủ'
+                }}
+            />
+            <Tab.Screen
+                name="Notifications"
+                component={Notifications}
+                options={{
+                    tabBarIcon: ({ color, size }) => (
+                        <Ionicons
+                            name="notifications-sharp"
+                            color={color}
+                            size={size}
+                        />
+                    ),
+                    tabBarLabel: 'Thông báo',
+                    tabBarLabelPosition: 'below-icon',
                 }}
             />
             <Tab.Screen

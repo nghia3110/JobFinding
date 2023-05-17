@@ -1,7 +1,6 @@
 import { Text, View } from 'react-native-ui-lib';
 import React from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
-import { User, Key } from 'assets';
 import { StyledButton, StyledInput, ScreenLayout } from 'screens/components';
 import { Controller, useForm } from 'react-hook-form';
 import { useNavigation } from '@react-navigation/native';

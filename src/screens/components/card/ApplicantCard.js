@@ -16,7 +16,7 @@ const ApplicantCard = ({ detail, jobId }) => {
                         source={{
                             uri: `${detail.avatar}`
                         }} />
-                    <Text marginL-70 marginT-20 textBlack fs14 font-bold numberOfLines={1}>{detail.first_name + ' ' + detail.last_name}</Text>
+                    <Text marginL-70 marginT-20 textBlack fs14 font-bold numberOfLines={1}>{detail.last_name + ' ' + detail.first_name}</Text>
                 </View>
                 <View marginT-25 row spread>
                     <Button

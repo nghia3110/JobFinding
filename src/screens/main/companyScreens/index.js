@@ -6,3 +6,4 @@ export * from './updateJob';
 export * from './createJob';
 export * from './approveJob';
 export * from './viewUserProfile';
+export * from './notifications'

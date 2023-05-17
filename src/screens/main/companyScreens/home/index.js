@@ -1,7 +1,6 @@
 import React from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
 import { View, Text, TouchableOpacity } from 'react-native-ui-lib';
-import { Search, Character2 } from 'assets';
 import { boxWithShadow, footer } from 'utilities/boxShadow';
 import { useNavigation } from '@react-navigation/native';
 import { companyApi } from 'apis';
@@ -9,7 +8,6 @@ import { ScreenLayout } from 'screens/components';
 import CardScrollView from 'screens/components/CardScrollView';
 import { useAuth } from 'hooks';
 import JobCard from 'screens/components/card/JobCard';
-
 
 export const CompanyHomeScreen = ({ navigation }) => {
     const navi = useNavigation();
@@ -31,18 +29,19 @@ export const CompanyHomeScreen = ({ navigation }) => {
                 }}
                 showsVerticalScrollIndicator={false}
             >
-            <CardScrollView 
-                apiFetcher={companyApi.getCompanyJobs}
-                fetcherKey={'get-job-by-company'}
-                params={{
-                    title: 'Jobs',
-                    desc: 'Company Jobs'
-                }}
-                title={'Công việc đã đăng tuyển'}
-                navigateTo={'Jobs'}
-                
-            />
+                <CardScrollView
+                    apiFetcher={companyApi.getCompanyJobs}
+                    fetcherKey={'get-job-by-company'}
+                    params={{
+                        title: 'Jobs',
+                        desc: 'Company Jobs'
+                    }}
+                    title={'Công việc đã đăng tuyển'}
+                    navigateTo={'Jobs'}
+
+                />
             </ScrollView>
+
         </ScreenLayout>
 
     );

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Image, Text, View } from 'react-native-ui-lib';
-import { ExpandRight, Heart, Images, companyFill } from 'assets';
+import { ExpandRight } from 'assets';
 import { TouchableOpacity } from 'react-native';
 import { StyledButton } from 'screens/components';
 import { useDispatch } from 'react-redux';
@@ -43,7 +43,7 @@ export const CompanyProfileManager = () => {
                 <ProfileOption
                     title={'Thông tin công ty'}
                     icon={<Icon name={'info-circle'} size={25} color="#000" />}
-                    navigateTo={'UpdateProfile'}
+                    navigateTo={'UpdateCompanyInfo'}
                     params={{data: company}}
                 />
                 

@@ -6,3 +6,4 @@ export * from './home';
 export * from './listCv';
 export * from './viewProfile';
 export * from './viewCV';
+export * from './uploadCV';

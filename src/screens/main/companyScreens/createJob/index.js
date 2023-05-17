@@ -1,19 +1,90 @@
-import React, { useEffect } from 'react';
-import { Image, Text, View } from 'react-native-ui-lib';
-import { Images, User } from 'assets';
+import React, { useEffect, useState } from 'react';
+import { Image, View, RadioButton, RadioGroup, Text, Incubator } from 'react-native-ui-lib';
 import { Controller, useForm } from 'react-hook-form';
 import { useMutation } from 'react-query';
 import { companyApi } from 'apis';
 import { LoadingScreen } from 'components';
-import Toast from 'react-native-simple-toast';
-import { StyledButton, StyledInput, StyledDatePicker, ScreenLayout } from 'screens/components';
+import { StyledButton, StyledInput, ScreenLayout, StyledTextArea, StyledPicker } from 'screens/components';
 import { useNavigation } from '@react-navigation/native';
 import { useAuth } from 'hooks';
-import { ScrollView } from 'react-native';
+import { ScrollView, StyleSheet } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome5';
+import { boxWithShadow } from 'utilities/boxShadow';
+
+const { TextField } = Incubator;
+
+const location = [
+    {
+        label: 'Hà Nội',
+        value: 'Hà Nội'
+    },
+    {
+        label: 'TP.Hồ Chí Minh',
+        value: 'TP.Hồ Chí Minh'
+    },
+    {
+        label: 'Đà Nẵng, Thừa Thiên Huế',
+        value: 'Đà Nẵng, Thừa Thiên Huế'
+    }
+];
+
+const jobType = [
+    {
+        label: 'Toàn thời gian',
+        value: 'Toàn thời gian'
+    },
+    {
+        label: 'Thực tập',
+        value: 'Thực tập'
+    },
+];
+
+const position = [
+    {
+        label: 'Nhân viên',
+        value: 'Nhân viên'
+    },
+    {
+        label: 'Thực tập sinh',
+        value: 'Thực tập sinh'
+    },
+    {
+        label: 'Trưởng nhóm',
+        value: 'Trưởng nhóm'
+    },
+    {
+        label: 'Quản lý',
+        value: 'Quản lý'
+    },
+];
+
+const category = [
+    {
+        label: 'IT phần mềm',
+        value: '1'
+    },
+    {
+        label: 'Dịch vụ khách hàng',
+        value: '2'
+    },
+    {
+        label: 'IT phần cứng / mạng',
+        value: '3'
+    },
+    {
+        label: 'Điện tử viễn thông',
+        value: '4'
+    },
+    {
+        label: 'Hành chính / Văn phòng',
+        value: '5'
+    },
+];
 
 export const CreateJob = () => {
     const navi = useNavigation();
     const { company } = useAuth();
+    const [salaryType, setSalaryType] = useState('Thỏa thuận');
 
     const {
         isLoading,
@@ -33,7 +104,9 @@ export const CreateJob = () => {
         const jobInfo = {
             job_name: values.job_name,
             location: values.location,
-            salary: values.salary,
+            category: values.category,
+            salaryFrom: values.salaryFrom !== undefined ? parseInt(values.salaryFrom) : 0,
+            salaryTo: values.salaryTo !== undefined ? parseInt(values.salaryTo) : 0,
             jobType: values.jobType,
             numberNeeded: parseInt(values.numberNeeded),
             position: values.position,
@@ -46,7 +119,6 @@ export const CreateJob = () => {
 
     useEffect(() => {
         if (responseData === undefined) return;
-        //Toast.show('Create job successfully!')
         setTimeout(() => navi.navigate('CompanyHomeScreen'), 500);
     }, [responseData])
 
@@ -99,24 +171,102 @@ export const CreateJob = () => {
                                     value
                                 }
                             }) => (
-                                <StyledInput
+                                <StyledPicker
+                                    error={errors.category && errors.category.message}
+                                    title={'Ngành nghề: '}
+                                    placeholder={'Ngành nghề'}
+                                    onChange={onChange}
+                                    onBlur={onBlur}
+                                    value={value}
+                                    data={category}
+                                />
+                            )}
+                            name="category"
+                            rules={{
+                                required: 'Category is required!',
+                            }}
+                        />
+                        <Controller
+                            control={control}
+                            render={({
+                                field: {
+                                    onChange,
+                                    onBlur,
+                                    value
+                                }
+                            }) => (
+                                <StyledPicker
                                     error={errors.location && errors.location.message}
                                     title={'Địa điểm: '}
                                     placeholder={'Địa điểm'}
                                     onChange={onChange}
                                     onBlur={onBlur}
                                     value={value}
+                                    data={location}
                                 />
                             )}
                             name="location"
                             rules={{
                                 required: 'Location is required!',
-                                maxLength: {
-                                    value: 30,
-                                    message: 'Location too long!'
-                                },
                             }}
                         />
+                        <View style={{ position: 'relative' }}>
+                            <Text fs14 marginB-10 marginL-10>Mức lương:</Text>
+                            <View marginT-10 marginB-20>
+                                <RadioGroup
+                                    initialValue={'Thỏa thuận'}
+                                    onValueChange={value => setSalaryType(value)}
+                                    style={{ display: 'flex', flexDirection: 'row', gap: 20, marginLeft: 10 }}
+                                >
+                                    <RadioButton value={'Thỏa thuận'} label={'Thỏa thuận'} />
+                                    <RadioButton value={'Khoảng lương'} label={'Khoảng lương'} />
+                                </RadioGroup>
+                            </View>
+                            {salaryType === 'Khoảng lương' && <>
+                                <View marginT-20 flex row spread centerV>
+                                    <Controller
+                                        control={control}
+                                        render={({
+                                            field: {
+                                                onChange,
+                                                value
+                                            }
+                                        }) => (
+                                            <TextField
+                                                placeholder={'Từ'}
+                                                placeholderTextColor={'rgba(0,0,0,0.5)'}
+                                                style={style.styledInput}
+                                                value={value}
+                                                onChangeText={onChange}
+                                                editable={salaryType === 'Khoảng lương'}
+                                            />
+                                        )}
+                                        name="salaryFrom"
+                                    />
+                                    <Icon name={'arrow-right'} size={20} />
+                                    <Controller
+                                        control={control}
+                                        render={({
+                                            field: {
+                                                onChange,
+                                                value
+                                            }
+                                        }) => (
+                                            <TextField
+                                                placeholder={'Đến'}
+                                                placeholderTextColor={'rgba(0,0,0,0.5)'}
+                                                style={[style.styledInput]}
+                                                value={value}
+                                                onChangeText={onChange}
+                                                editable={salaryType === 'Khoảng lương'}
+                                            />
+                                        )}
+                                        name="salaryTo"
+                                    />
+                                </View>
+                                <View marginT-15 marginB-10><Text fs14 center centerV>triệu / tháng</Text></View>
+                            </>}
+                        </View>
                         <Controller
                             control={control}
                             render={({
@@ -126,40 +276,14 @@ export const CreateJob = () => {
                                     value
                                 }
                             }) => (
-                                <StyledInput
-                                    error={errors.salary && errors.salary.message}
-                                    title={'Lương: '}
-                                    placeholder={'Mức lương'}
-                                    onChange={onChange}
-                                    onBlur={onBlur}
-                                    value={value}
-                                />
-                            )}
-                            name="salary"
-                            rules={{
-                                required: 'Salary is required!',
-                                maxLength: {
-                                    value: 30,
-                                    message: 'Salary too long!'
-                                },
-                            }}
-                        />
-                        <Controller
-                            control={control}
-                            render={({
-                                field: {
-                                    onChange,
-                                    onBlur,
-                                    value
-                                }
-                            }) => (
-                                <StyledInput
+                                <StyledPicker
                                     error={errors.jobType && errors.jobType.message}
                                     title={'Hình thức: '}
                                     placeholder={'Hình thức làm việc'}
                                     onChange={onChange}
                                     onBlur={onBlur}
                                     value={value}
+                                    data={jobType}
                                 />
                             )}
                             name="jobType"
@@ -195,13 +319,14 @@ export const CreateJob = () => {
                                     value
                                 }
                             }) => (
-                                <StyledInput
+                                <StyledPicker
                                     error={errors.position && errors.position.message}
                                     title={'Vị trí công việc: '}
                                     placeholder={'Vị trí'}
                                     onChange={onChange}
                                     onBlur={onBlur}
                                     value={value}
+                                    data={position}
                                 />
                             )}
                             name="position"
@@ -216,15 +341,13 @@ export const CreateJob = () => {
                                     value
                                 }
                             }) => (
-                                <StyledInput
-                                    error={errors.jobDescription && errors.jobDescription.message}
+                                <StyledTextArea
+                                    error={errors.job_description && errors.job_description.message}
                                     title={'Mô tả công việc: '}
                                     placeholder={'Mô tả công việc'}
                                     onChange={onChange}
                                     onBlur={onBlur}
                                     value={value}
-                                    multiline={true}
-                                    numberOfLines={8}
                                 />
                             )}
                             name="job_description"
@@ -239,15 +362,13 @@ export const CreateJob = () => {
                                     value
                                 }
                             }) => (
-                                <StyledInput
-                                    error={errors.jobRequirement && errors.jobRequirement.message}
+                                <StyledTextArea
+                                    error={errors.job_requirement && errors.job_requirement.message}
                                     title={'Yêu cầu ứng viên: '}
                                     placeholder={'Yêu cầu ứng viên'}
                                     onChange={onChange}
                                     onBlur={onBlur}
                                     value={value}
-                                    multiline={true}
-                                    numberOfLines={8}
                                 />
                             )}
                             name="job_requirement"
@@ -262,27 +383,41 @@ export const CreateJob = () => {
                                     value
                                 }
                             }) => (
-                                <StyledInput
-                                    error={errors.jobBenefit && errors.jobBenefit.message}
+                                <StyledTextArea
+                                    error={errors.job_benefit && errors.job_benefit.message}
                                     title={'Quyền lợi: '}
                                     placeholder={'Quyền lợi'}
                                     onChange={onChange}
                                     onBlur={onBlur}
                                     value={value}
-                                    multiline={true}
-                                    numberOfLines={8}
                                 />
                             )}
                             name="job_benefit"
                             rules={{ required: 'Job benefit is required!' }}
                         />
                     </View>
-                    <View paddingH-30 paddingV-10 backgroundColor={'#fff'} row spread>
-                        <StyledButton onPress={handleSubmit(onSubmit)} label={'Tạo công việc'} />
-                    </View>
                 </ScrollView>
+                <View paddingH-30 paddingV-10 backgroundColor={'#fff'} row spread>
+                    <StyledButton onPress={handleSubmit(onSubmit)} label={'Tạo công việc'} />
+                </View>
 
             </ScreenLayout>
         </>
     )
 }
+
+const style = StyleSheet.create({
+    styledInput: {
+        borderStyle: 'solid',
+        borderWidth: 0,
+        borderRadius: 12,
+        paddingLeft: 15,
+        backgroundColor: '#fff',
+        ...boxWithShadow,
+        elevation: 12,
+        paddingTop: 6,
+        paddingBottom: 6,
+        zIndex: 1,
+        width: 150
+    },
+});

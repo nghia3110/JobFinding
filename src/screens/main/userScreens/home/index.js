@@ -9,7 +9,6 @@ import { ScreenLayout } from 'screens/components';
 import CardScrollView from 'screens/components/CardScrollView';
 import { useAuth } from 'hooks';
 
-
 export const UserHomeScreen = ({ navigation }) => {
     const navi = useNavigation();
     const {user} = useAuth();

@@ -1,5 +1,13 @@
+import NetInfo from "@react-native-community/netinfo";
+
+function getIPv4Address() {
+    NetInfo.fetch().then(state => {
+        return state.details.ipAddress;
+    });
+}
+
 export const Config = {
-    API_URL: 'http://192.168.0.103:8000/api',
+    API_URL: `http://192.168.22.100:8000/api`,
     NUM_WORDS_PREVIEW: 5,
     REVIEW_STATUS_LOGS: {
         FINISHED: 'finished',

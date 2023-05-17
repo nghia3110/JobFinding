@@ -1,7 +1,6 @@
 import { Text, View } from 'react-native-ui-lib';
 import React, { useEffect } from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
-import { User, Key } from 'assets';
 import { StyledButton, StyledInput } from 'screens/components';
 import { Controller, useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
@@ -10,7 +9,7 @@ import { useNavigation } from '@react-navigation/native';
 import { tokenStorage } from 'utilities';
 import { useMutation } from 'react-query';
 import { accountApi } from 'apis';
-import { LoadingScreen } from 'components';
+import { Alert, LoadingScreen } from 'components';
 import { AuthLayout } from 'screens/components/layout/AuthLayout';
 
 export const LoginScreen = () => {
@@ -19,9 +18,14 @@ export const LoginScreen = () => {
 
     const {
         isLoading,
+        isError,
         mutate: loginHandler,
         data,
-    } = useMutation(accountApi.login);
+    } = useMutation(accountApi.login, {
+        onError: (error) => {
+            console.log('Mutation error:', error.message);
+        },
+    });
 
     const {
         handleSubmit,
@@ -70,6 +74,7 @@ export const LoginScreen = () => {
     return (
         <>
             {isLoading && <LoadingScreen />}
+            {isError && <Alert message={'Email hoặc mật khẩu không đúng!'} isSuccess={false} />}
             <AuthLayout
                 contentHeight={'100%'}
             >
@@ -85,10 +90,10 @@ export const LoginScreen = () => {
                             }) => (
                                 <StyledInput
                                     error={
-                                        errors.username &&
-                                        errors.username.message
+                                        errors.email &&
+                                        errors.email.message
                                     }
-                                    title={'Email:'}
+                                    title={'Email: '}
                                     placeholder={'Email'}
                                     onChange={onChange}
                                     onBlur={onBlur}

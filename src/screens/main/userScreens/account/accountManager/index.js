@@ -1,34 +1,64 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Image, Text, View } from 'react-native-ui-lib';
-import { ExpandRight, Heart, Images, UserFill } from 'assets';
+import { ExpandRight } from 'assets';
 import { TouchableOpacity } from 'react-native';
 import { StyledButton } from 'screens/components';
 import { useDispatch } from 'react-redux';
-import { onLogout } from 'store/auth';
+import { onLogout, setUser } from 'store/auth';
 import { useNavigation } from '@react-navigation/native';
 import { useAuth } from 'hooks';
-import { useQuery } from 'react-query';
-import { imageApi } from 'apis/imageApi';
+import { useMutation } from 'react-query';
+import { imageApi } from 'apis';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import DocumentPicker from 'react-native-document-picker';
+import { LoadingScreen } from 'components';
 
 export const AccountManager = () => {
     const dispatch = useDispatch();
     const navi = useNavigation();
     const { user } = useAuth();
-    /* const {
+    const [uploadImage, setUploadImage] = useState();
+
+    const {
         isLoading,
         mutate: updateAvatarHandler,
-        data: responseData,
-    } = useMutation(imageApi.uploadImage) */
+        data,
+    } = useMutation(imageApi.uploadImage)
+
+    const pickImage = async () => {
+        //const result = await launchImageLibrary();
+        const result = await DocumentPicker.pick({
+            type: [DocumentPicker.types.images],
+        });
+
+        const upload = new FormData();
+        upload.append('file', result[0]);
+
+        //console.log(result.assets[0])
+
+        updateAvatarHandler(upload);
+    }
+
+    useEffect(() => {
+        if (data === undefined) return;
+        dispatch(setUser({
+            ...user,
+            userInfo: {
+                ...user.userInfo,
+                avatar: data.avatar
+            }
+        }))
+    }, [data])
 
     return (
         <>
+            {isLoading && <LoadingScreen />}
             <View backgroundColor={'#ffffff'} height={'100%'} paddingH-20>
                 {user && <View paddingT-40 marginB-20 row centerV>
-                    <TouchableOpacity>
-                            <Image source={{ uri: user.userInfo.avatar }} style={{
-                                borderRadius: 30
-                            }} height={60} width={60} />
+                    <TouchableOpacity onPress={pickImage}>
+                        <Image source={{ uri: user.userInfo.avatar }} style={{
+                            borderRadius: 30
+                        }} height={60} width={60} />
                     </TouchableOpacity>
                     <View marginL-15>
                         <Text
@@ -36,7 +66,7 @@ export const AccountManager = () => {
                             fs19
                             font-bold
                             textBlack
-                        >{`${user.userInfo.first_name} ${user.userInfo.last_name}`}</Text>
+                        >{`${user.userInfo.last_name} ${user.userInfo.first_name}`}</Text>
                         <Text marginT-2 fs14 font-medium black50>
                             {user.email}
                         </Text>
@@ -60,7 +90,6 @@ export const AccountManager = () => {
                         label={'Đăng xuất'}
                         bg={'rgba(41, 114, 254, 1)'}
                         color={{ color: '#f1f4ff' }}
-
                     />
                 </View>
             </View>

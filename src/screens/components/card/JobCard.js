@@ -6,6 +6,16 @@ import { boxWithShadow } from 'utilities/boxShadow';
 import { useNavigation } from '@react-navigation/native';
 import { useAuth } from 'hooks';
 
+const handleSalary = (salaryFrom, salaryTo) => {
+    if(salaryFrom) {
+        if(salaryTo) return `${salaryFrom} - ${salaryTo} triệu`;
+        else return `${salaryFrom} triệu`;
+    } else {
+        if(salaryTo) return `Tới ${salaryTo} triệu`;
+        else return 'Thỏa thuận';
+    }
+}
+
 const JobCard = ({ detail }) => {
     const navi = useNavigation();
     const { company } = useAuth();
@@ -23,7 +33,7 @@ const JobCard = ({ detail }) => {
                     }} />
                 <Text paddingT-10 textBlack fs14 font-bold numberOfLines={1}>{detail.job_name}</Text>
                 <Text marginT-5 black50 fs12 font-bold>{!company ? detail.companyName : company.companyInfo.companyName}</Text>
-                <Text marginT-5 textBlack fs12 font-medium>{detail.salary}</Text>
+                <Text marginT-5 textBlack fs12 font-medium>{handleSalary(detail.salaryFrom, detail.salaryTo)}</Text>
                 <View marginT-2 flex row centerV spread>
                     <View row width={'50%'}>
                         <Location />

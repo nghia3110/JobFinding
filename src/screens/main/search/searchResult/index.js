@@ -11,8 +11,9 @@ import { NotFound } from 'assets';
 const convertUrl = (key, data) => {
     let query = '';
     
+    
     key.forEach(el => {
-        if (data[el]) 
+        if (data[el] !== undefined) 
         {
             query += `${el}=${data[el]}&`;
         }

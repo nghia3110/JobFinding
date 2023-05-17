@@ -10,6 +10,16 @@ import { Image } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { useAuth } from 'hooks';
 
+const handleSalary = (salaryFrom, salaryTo) => {
+    if(salaryFrom) {
+        if(salaryTo) return `${salaryFrom} - ${salaryTo} triệu`;
+        else return `Trên ${salaryFrom} triệu`;
+    } else {
+        if(salaryTo) return `Tới ${salaryTo} triệu`;
+        else return 'Thỏa thuận';
+    }
+}
+
 export const JobDetail = ({
     route,
     navigation
@@ -76,7 +86,7 @@ export const JobDetail = ({
                                                 <Icon style={styles.iconStyle} name='money-bill-wave' size={24} color="#000" />
                                                 <View column>
                                                     <Text fs14 black50 marginB-5>Mức lương</Text>
-                                                    <Text fs16 textBlack>{data.salary}</Text>
+                                                    <Text fs16 textBlack>{handleSalary(data.salaryFrom, data.salaryTo)}</Text>
                                                 </View>
                                             </View>
                                             <View row style={styles.itemInfoContainer}>

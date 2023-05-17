@@ -1,6 +1,6 @@
 import { Text, View } from 'react-native-ui-lib';
 import React, { useEffect, useRef, useState } from 'react';
-import { StyledButton, StyledInput, ScreenLayout } from 'screens/components';
+import { StyledButton, StyledInput, ScreenLayout, StyledDatePicker } from 'screens/components';
 import { ScrollView, TouchableOpacity } from 'react-native';
 import { LoadingScreen } from 'components';
 import { useForm, Controller } from 'react-hook-form';
@@ -22,8 +22,6 @@ export const Education = ({ route, navigation }) => {
         mutate: updateHandler,
         data,
     } = useMutation(userApi.updateProfile);
-
-    console.log(education);
 
     const {
         handleSubmit,
@@ -138,7 +136,7 @@ export const Education = ({ route, navigation }) => {
                             render={({
                                 field: { onChange, onBlur, value },
                             }) => (
-                                <StyledInput
+                                <StyledDatePicker
                                     error={
                                         errors.start && errors.start.message
                                     }
@@ -158,9 +156,9 @@ export const Education = ({ route, navigation }) => {
                             render={({
                                 field: { onChange, onBlur, value },
                             }) => (
-                                <StyledInput
+                                <StyledDatePicker
                                     error={
-                                        errors.start && errors.start.message
+                                        errors.end && errors.end.message
                                     }
                                     title={'Kết thúc: '}
                                     placeholder={'Kết thúc'}
@@ -170,9 +168,7 @@ export const Education = ({ route, navigation }) => {
                                 />
                             )}
                             name="end"
-                            rules={{ required: 'End is required!' }}
                         />
-
                     </View>
                 </ScrollView>
                 <View paddingH-30 paddingV-10 backgroundColor={'#fff'} row spread>

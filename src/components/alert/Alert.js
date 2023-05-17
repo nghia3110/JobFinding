@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, View } from 'react-native-ui-lib';
 import { StyleSheet } from 'react-native';
-import { Colors } from 'assets';
+import { Colors } from 'assets/Colors';
 
 export const Alert = ({ message, isSuccess, clearMessage, ...props }) => {
     if (!message) return null;

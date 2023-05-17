@@ -12,6 +12,7 @@ import { QueryClientProvider } from 'react-query';
 import { queryClient } from 'libs';
 
 export const App = () => (
+    
     <Provider store={store}>
         <PersistGate persistor={persistor}>
             <QueryClientProvider client={queryClient}>               

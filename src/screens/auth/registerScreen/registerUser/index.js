@@ -5,7 +5,6 @@ import {
     StyledDatePicker,
     AuthLayout,
 } from 'screens/components';
-import { Key, User } from 'assets';
 import { ScrollView, StyleSheet } from 'react-native';
 import React, { useEffect, useRef } from 'react';
 import { boxWithShadow } from 'utilities/boxShadow';
@@ -13,8 +12,7 @@ import { useForm, Controller } from 'react-hook-form';
 import { useNavigation } from '@react-navigation/native';
 import { useMutation } from 'react-query';
 import { accountApi } from 'apis';
-import Toast from 'react-native-simple-toast';
-import { LoadingScreen } from 'components';
+import { Alert, LoadingScreen } from 'components';
 
 const formatDate = date => {
     const d = new Date(date);
@@ -29,7 +27,7 @@ const formatDate = date => {
         day = '0' + day;
     }
 
-    return [year, month, day].join('-');
+    return [day, month, year].join('/');
 };
 
 const isValidEmail = email =>
@@ -42,9 +40,14 @@ export const RegisterUser = () => {
     const navi = useNavigation();
     const {
         isLoading,
+        isError,
         mutate: registerHandler,
         data,
-    } = useMutation(accountApi.registerUserAccount);
+    } = useMutation(accountApi.registerUserAccount,{
+        onError: (error) => {
+            console.log('Mutation error:', error.message);
+        },
+    });
 
     const {
         handleSubmit,
@@ -64,13 +67,11 @@ export const RegisterUser = () => {
             phone: values.phoneNumber,
             address: values.address
         }
-        console.log(userInfo);
         registerHandler(userInfo);
     };
 
     useEffect(() => {
         if (data === undefined) return;
-        Toast.show('Register Successfully ');
         setTimeout(() => navi.navigate('Login'), 500);
     }, [data]);
 
@@ -80,6 +81,7 @@ export const RegisterUser = () => {
     return (
         <>
             {isLoading && <LoadingScreen />}
+            {isError && <Alert message={'Email đã được sử dụng!'} isSuccess={false} />}
             <AuthLayout
                 contentHeight={'100%'}
             >

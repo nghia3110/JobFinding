@@ -19,7 +19,7 @@ export const ViewUserProfile = ({ route, navigation }) => {
                             }} height={60} width={60} />
                         <View marginL-15>
                             <Text marginB-2 fs19 font-bold
-                                textBlack>{`${detail.first_name} ${detail.last_name}`}</Text>
+                                textBlack>{`${detail.last_name} ${detail.first_name}`}</Text>
                         </View>
                     </View>
                     <View row paddingH-70 >
