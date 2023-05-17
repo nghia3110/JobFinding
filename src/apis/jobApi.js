@@ -4,29 +4,13 @@ const jsonType = { headers: { 'Content-Type': 'application/json' } };
 
 export const jobApi = {
     getAllJob: async () => {
-        return fetch('http://192.168.0.103:8000/api/job/get-all', {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        }).then(response => response.json())
-            .then(data => {
-                if (data.message) return false;
-                return data;
-            });
+        const data  = await axios.get(`/job/get-all`);
+        return data;
     },
 
     getRecommendJob: async () => {
-        return fetch('http://192.168.0.103:8000/api/job/get-recommend-job', {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        }).then(response => response.json())
-            .then(data => {
-                if (data.message) return false;
-                return data;
-            });
+        const data  = await axios.get(`/job/get-recommend-job`);
+        return data;
     },
     
     searchJob: async query => {

@@ -6,5 +6,9 @@ export const cvApi = {
     getCvFile: async (id) => {
         const data = await axios.get(`/cv/get-cv-file?id=${id}`)
         return data
-    }
+    },
+
+    uploadCV: async (data) => await axios.post('/cv/createCV', data,{
+        headers: { 'Content-Type': 'multipart/form-data' },
+    })
 };

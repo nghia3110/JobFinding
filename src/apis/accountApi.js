@@ -3,7 +3,7 @@ import { RotationGestureHandler } from 'react-native-gesture-handler';
 
 export const accountApi = {
     registerUserAccount: async (userInfo) => {
-        /* return fetch('http://192.168.0.103:8000/api/auth/register', {
+        /* return fetch('http://192.168.1.183:8000/api/auth/register', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',

@@ -30,4 +30,8 @@ export const companyApi = {
     approveJob: async (data) => axios.put(`/company/approve-job`, data, {
         headers: { 'Content-Type': 'application/json' },
     }),
+    getNotification: async () => {
+        const data = await axios.get('/company/notification');
+        return data;
+    }
 }
