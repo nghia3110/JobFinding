@@ -13,6 +13,7 @@
     "dependencies": {
         "@react-native-async-storage/async-storage": "^1.18.1",
         "@react-native-community/datetimepicker": "^6.7.5",
+        "@react-native-community/netinfo": "^9.3.10",
         "@react-native-masked-view/masked-view": "^0.2.9",
         "@react-native-picker/picker": "^2.4.10",
         "@react-native-voice/voice": "^3.2.4",
@@ -37,6 +38,7 @@
         "react-native-document-picker": "^8.2.0",
         "react-native-flipper": "^0.189.0",
         "react-native-gesture-handler": "^2.9.0",
+        "react-native-image-picker": "^5.3.1",
         "react-native-linear-gradient": "^2.6.2",
         "react-native-loading-spinner-overlay": "^3.0.1",
         "react-native-modal": "^13.0.1",
